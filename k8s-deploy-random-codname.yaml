@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: random-codname
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: random-codname-deployment
+  namespace: random-codname
+  labels:
+    app: random-codname
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: random-codname
+  template:
+    metadata:
+      labels:
+        app: random-codname
+    spec:
+      containers:
+        - name: random-codname
+          image: gfnord/random-codname:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: random-codname-service
+  namespace: random-codname
+spec:
+  ports:
+  - port: 8089
+    protocol: TCP
+    targetPort: 8089
+  selector:
+    app: random-codname
+  type: LoadBalancer
