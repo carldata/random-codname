@@ -49,4 +49,4 @@ spec:
     targetPort: 8089
   selector:
     app: random-codname
-  type: LoadBalancer
+  type: NodePort
